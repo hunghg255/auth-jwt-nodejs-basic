@@ -72,6 +72,14 @@ const updateRefreshToken = (username, refreshToken) => {
   });
 };
 
+app.get('/', (req, res) => {
+  res.send(`
+  <h1>/login</h1>
+  <h1>/refresh-token</h1>
+  <h1>/logout</h1>
+  `);
+});
+
 app.post('/login', (req, res) => {
   const username = req.body.username;
   const user = users.find((user) => user.username === username);
