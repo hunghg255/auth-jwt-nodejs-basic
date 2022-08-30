@@ -74,10 +74,33 @@ const updateRefreshToken = (username, refreshToken) => {
 
 app.get('/', (req, res) => {
   res.send(`
-  <h1>/login</h1>
-  <h1>/refresh-token</h1>
-  <h1>/logout</h1>
-  `);
+  <code>
+  <h1>GET /posts</h1>
+  <p> Authorization: Bearer token</p>
+
+  <br />
+
+  <h1>POST /login</h1>
+  <p> Content-Type: application/json</p>
+  <p>Body</p>
+  <p> {
+    "username": "jim"
+  }</p>
+
+  <br />
+
+  <h1>POST /refresh-token</h1>
+  <p> Content-Type: application/json</p>
+  <p>Body</p>
+  <p> {
+    "refreshToken": token
+  }</p>
+
+  <br />
+
+  <h1>DELETE /logout</h1>
+  <p> Authorization: Bearer token</p>
+  </code>`);
 });
 
 app.post('/login', (req, res) => {
