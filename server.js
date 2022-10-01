@@ -3,37 +3,38 @@ require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('./middleware/auth');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 
 app.use(express.json());
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // database
-let users = [
+let account = [
   {
     id: 1,
-    username: 'henry',
-    refreshToken: null,
-  },
-  {
-    id: 2,
-    username: 'jim',
+    username: 'admin',
     refreshToken: null,
   },
 ];
 
-const posts = [
+const customers = [
   {
     userId: 1,
-    post: 'post henry',
+    name: 'Henry',
+    roles: 'CUSTOMER',
   },
   {
     userId: 2,
-    post: 'post jim',
+    name: 'Jim',
+    roles: 'VIEW',
   },
   {
-    userId: 1,
-    post: 'post henry 2',
+    userId: 3,
+    name: 'Peter',
+    roles: 'MANAGE',
   },
 ];
 
@@ -45,7 +46,7 @@ const generateTokens = (payload) => {
     { id, username },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: '1m',
+      expiresIn: '2m',
     }
   );
 
@@ -61,7 +62,7 @@ const generateTokens = (payload) => {
 };
 
 const updateRefreshToken = (username, refreshToken) => {
-  users = users.map((user) => {
+  account = account.map((user) => {
     if (user.username === username)
       return {
         ...user,
@@ -73,39 +74,14 @@ const updateRefreshToken = (username, refreshToken) => {
 };
 
 app.get('/', (req, res) => {
-  res.send(`
-  <code>
-  <h1>GET /posts</h1>
-  <p> Authorization: Bearer token</p>
-
-  <br />
-
-  <h1>POST /login</h1>
-  <p> Content-Type: application/json</p>
-  <p>Body</p>
-  <p> {
-    "username": "jim"
-  }</p>
-
-  <br />
-
-  <h1>POST /refresh-token</h1>
-  <p> Content-Type: application/json</p>
-  <p>Body</p>
-  <p> {
-    "refreshToken": token
-  }</p>
-
-  <br />
-
-  <h1>DELETE /logout</h1>
-  <p> Authorization: Bearer token</p>
-  </code>`);
+  res.send(`<h1>Hello</h1>
+  <a href="https://jwt-auth-1.herokuapp.com/api" target="_blank">Documentation</a>
+  `);
 });
 
-app.post('/login', (req, res) => {
+app.post('/auth/login', (req, res) => {
   const username = req.body.username;
-  const user = users.find((user) => user.username === username);
+  const user = account.find((user) => user.username === username);
 
   if (!user) return res.sendStatus(401);
 
@@ -115,11 +91,11 @@ app.post('/login', (req, res) => {
   res.json(tokens);
 });
 
-app.post('/refresh-token', (req, res) => {
+app.post('/auth/refresh-token', (req, res) => {
   const refreshToken = req.body.refreshToken;
   if (!refreshToken) return res.sendStatus(401);
 
-  const user = users.find((user) => user.refreshToken === refreshToken);
+  const user = account.find((user) => user.refreshToken === refreshToken);
   if (!user) return res.sendStatus(403);
 
   try {
@@ -135,16 +111,16 @@ app.post('/refresh-token', (req, res) => {
   }
 });
 
-app.delete('/logout', verifyToken, (req, res) => {
-  const user = users.find((user) => user.id === req.userId);
+app.delete('/auth/logout', verifyToken, (req, res) => {
+  const user = account.find((user) => user.id === req.userId);
   updateRefreshToken(user.username, null);
 
   res.sendStatus(204);
 });
 
 // app
-app.get('/posts', verifyToken, (req, res) => {
-  res.json(posts.filter((post) => post.userId === req.userId));
+app.get('/customers', verifyToken, (req, res) => {
+  res.json(customers.filter((post) => post.userId !== req.userId));
 });
 
 const PORT = process.env.PORT || 4000;
