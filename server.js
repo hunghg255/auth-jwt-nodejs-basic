@@ -38,6 +38,29 @@ const customers = [
   },
 ];
 
+const galleries = [
+  {
+    id: 1,
+    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=1',
+  },
+  {
+    id: 2,
+    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=2',
+  },
+  {
+    id: 3,
+    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=3',
+  },
+  {
+    id: 4,
+    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=4',
+  },
+  {
+    id: 5,
+    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=5',
+  },
+];
+
 const generateTokens = (payload) => {
   const { id, username } = payload;
 
@@ -74,8 +97,24 @@ const updateRefreshToken = (username, refreshToken) => {
 };
 
 app.get('/', (req, res) => {
-  res.send(`<h1>Hello</h1>
-  <a href="https://jwt-auth-1.herokuapp.com/api" target="_blank">Documentation</a>
+  res.send(`<h1>Welcome to Agiletech Company Test</h1>
+  <a href="https://jwt-auth-1.herokuapp.com/api" target="_blank">Swagger API</a>
+  <code>
+    <h4>POST: /auth/login: Đăng nhập có accessToken, refreshToken (accessToken hết hạn sau 2 phút, refreshToken hết hạn sau 1 giờ)</h4>
+    <h4>POST: /auth/refreshToken: Refresh token khi accessToken hết hạn</h4>
+    <h4>POST: /auth/logout: Xoá access token</h4>
+    <br />
+    <h4>GET: /galleries: Lấy ảnh từ galleries</h4>
+    <br />
+    <h4>GET: /customers: Lấy danh sách customers</h4>
+    <h4>GET: /customers?name=: Lấy danh sách customers theo name</h4>
+    <h4>POST: /customers: Tạo một customers</h4>
+    <h4>PUT: /customers: Sửa thông tin customer</h4>
+    <h4>DELETE: /customers: Xoá customer</h4>
+  </code>
+
+  <h1>Yêu cầu</h1>
+
   `);
 });
 
@@ -121,6 +160,10 @@ app.delete('/auth/logout', verifyToken, (req, res) => {
 // app
 app.get('/customers', verifyToken, (req, res) => {
   res.json(customers.filter((post) => post.userId !== req.userId));
+});
+
+app.get('/galleries', (req, res) => {
+  res.json(galleries);
 });
 
 const PORT = process.env.PORT || 4000;

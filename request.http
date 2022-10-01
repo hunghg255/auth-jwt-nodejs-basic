@@ -23,3 +23,6 @@ Content-Type: application/json
 
 DELETE http://localhost:4000/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTY2NDY0OTYxMCwiZXhwIjoxNjY0NjQ5NjcwfQ.kI3chs2OP3yPZvhiavheyBFkdd7Hf6w93VOhsU5nsZI
+
+###
+GET http://localhost:4000/galleries

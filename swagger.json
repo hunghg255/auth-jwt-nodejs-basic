@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Testing of Agiletech"
+    "title": "Agiletech Test"
   },
   "host": "jwt-auth-1.herokuapp.com",
   "tags": [
@@ -12,6 +12,10 @@
     {
       "name": "Customers",
       "description": "Customers"
+    },
+    {
+      "name": "Galleries",
+      "description": "Galleries"
     }
   ],
   "schemes": ["https", "http"],
@@ -102,6 +106,20 @@
         "responses": {
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/galleries": {
+      "get": {
+        "tags": ["Galleries"],
+        "summary": "Get Galleries",
+        "description": "",
+        "operationId": "getGalleries",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
