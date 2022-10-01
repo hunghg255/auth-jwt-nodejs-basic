@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = require('./middleware/auth');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-
+import { v4 as uuidv4 } from 'uuid';
 const app = express();
 
 app.use(express.json());
@@ -14,7 +14,6 @@ app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // database
 let account = [
   {
-    id: 1,
     username: 'admin',
     refreshToken: null,
   },
@@ -22,41 +21,91 @@ let account = [
 
 const customers = [
   {
-    userId: 1,
+    userId: uuidv4(),
     name: 'Henry',
     roles: 'CUSTOMER',
   },
   {
-    userId: 2,
+    userId: uuidv4(),
     name: 'Jim',
     roles: 'VIEW',
   },
   {
-    userId: 3,
-    name: 'Peter',
+    userId: uuidv4(),
+    name: 'Peter 1',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 2',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 3',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 4',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 5',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 6',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 7',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 8',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 9',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 10',
+    roles: 'MANAGE',
+  },
+  {
+    userId: uuidv4(),
+    name: 'Peter 11',
     roles: 'MANAGE',
   },
 ];
 
 const galleries = [
   {
-    id: 1,
+    id: uuidv4(),
     imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=1',
   },
   {
-    id: 2,
+    id: uuidv4(),
     imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=2',
   },
   {
-    id: 3,
+    id: uuidv4(),
     imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=3',
   },
   {
-    id: 4,
+    id: uuidv4(),
     imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=4',
   },
   {
-    id: 5,
+    id: uuidv4(),
     imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=5',
   },
 ];
