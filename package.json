@@ -4,7 +4,6 @@
 	"description": "",
 	"main": "server.js",
 	"scripts": {
-		"auth": "nodemon authServer",
 		"dev": "nodemon server",
 		"start": "node server"
 	},
