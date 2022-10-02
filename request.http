@@ -1,5 +1,36 @@
-GET http://localhost:4000/customers
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTY2NDY1MDc4OSwiZXhwIjoxNjY0NjUwODQ5fQ.bsfp5wgtrzY7TqEbpInyXDuWq0Y4UEVzJHqydFqdh2g
+GET http://localhost:4000/posts?tags=Html
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjY0NzM0NzA3LCJleHAiOjE2NjQ4MjExMDd9.2UsNxQ108-t5MGD1FglANatPW1ACRp8juSMOL4A0t8o
+
+###
+POST http://localhost:4000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjY0NzMxNDcxLCJleHAiOjE2NjQ3MzIwNzF9.5M8t2tWMIt2siFkFu_W5djbgeXvoiDCkQxVxXj3yb-Y
+Content-Type: application/json
+
+{
+  "title": "admin",
+  "description": "Test",
+  "tags": ["HTML", "CSS"]
+}
+
+###
+PATCH  http://localhost:4000/posts/62c2c5df-2e29-49a4-afb7-3dcd4c86e5bf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjY0NzMzNzYyLCJleHAiOjE2NjQ4MjAxNjJ9.GhXU0JwOZk3vOYooi2W7gqNHF1sWvWzxJ2EOm0apsns
+Content-Type: application/json
+
+{
+  "title": "Update",
+  "description": "Update",
+  "tags": ["HTML", "CSS"]
+}
+
+###
+DELETE  http://localhost:4000/posts/12234
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjY0NzMwNjQ0LCJleHAiOjE2NjQ3MzEyNDR9.vXmAj_sTwIWAiVmfXnPSUI2xxbwiMHpQ0ZNnYHl0uW0
+
+###
+GET  http://localhost:4000/tags
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjY0NzMyNTgzLCJleHAiOjE2NjQ4MTg5ODN9.wskjwdjpUAgefZ2-_diobR4OyUbGfJddYzH2eobioK4
+
 
 ###
 

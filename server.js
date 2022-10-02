@@ -4,111 +4,17 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('./middleware/auth');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-const uuid = require('uuid');
+const swaggerDocument = require('./docs/swagger.json');
+const galleries = require('./model/galleries');
+let account = require('./model/users');
+const postDummy = require('./model/posts');
+const { faker } = require('@faker-js/faker');
+const tags = require('./model/tags');
+
 const app = express();
 
 app.use(express.json());
 app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// database
-let account = [
-  {
-    username: 'admin',
-    refreshToken: null,
-  },
-];
-
-const customers = [
-  {
-    userId: uuid.v4(),
-    name: 'Henry',
-    roles: 'CUSTOMER',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Jim',
-    roles: 'VIEW',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 1',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 2',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 3',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 4',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 5',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 6',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 7',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 8',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 9',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 10',
-    roles: 'MANAGE',
-  },
-  {
-    userId: uuid.v4(),
-    name: 'Peter 11',
-    roles: 'MANAGE',
-  },
-];
-
-const galleries = [
-  {
-    id: uuid.v4(),
-    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=1',
-  },
-  {
-    id: uuid.v4(),
-    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=2',
-  },
-  {
-    id: uuid.v4(),
-    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=3',
-  },
-  {
-    id: uuid.v4(),
-    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=4',
-  },
-  {
-    id: uuid.v4(),
-    imageUrl: 'https://source.unsplash.com/collection/1758353/800x350/?sig=5',
-  },
-];
 
 const generateTokens = (payload) => {
   const { id, username } = payload;
@@ -118,7 +24,7 @@ const generateTokens = (payload) => {
     { id, username },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: '2m',
+      expiresIn: username?.includes('Refresh') ? '1m' : '1d',
     }
   );
 
@@ -126,7 +32,7 @@ const generateTokens = (payload) => {
     { id, username },
     process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: '1h',
+      expiresIn: '30d',
     }
   );
 
@@ -146,24 +52,24 @@ const updateRefreshToken = (username, refreshToken) => {
 };
 
 app.get('/', (req, res) => {
-  res.send(`<h1>Welcome to Agiletech Company Test</h1>
-  <a href="https://jwt-auth-1.herokuapp.com/api" target="_blank">Swagger API</a>
-  <code>
+  res.send(`<h1>Welcome to Agiletech Test</h1>
+  <a href="https://jwt-auth-1.herokuapp.com/api" target="_blank">Link Swagger</a>
+  <code style="font-size:16px">
     <h4>POST: /auth/login: Đăng nhập có accessToken, refreshToken (accessToken hết hạn sau 2 phút, refreshToken hết hạn sau 1 giờ)</h4>
     <h4>POST: /auth/refreshToken: Refresh token khi accessToken hết hạn</h4>
     <h4>POST: /auth/logout: Xoá access token</h4>
     <br />
-    <h4>GET: /galleries: Lấy ảnh từ galleries</h4>
+    <h4>GET: /posts: Lấy danh sách posts</h4>
+    <h4>GET: /posts?title=&page=: Lấy danh sách posts theo title hoặc phân trang</h4>
+    <h4>POST: /posts: Tạo một posts</h4>
+    <h4>PATCH: /posts/{postId}: Sửa thông tin post</h4>
+    <h4>DELETE: /posts/{postId}: Xoá post</h4>
+    <h4>GET: /tags: Lấy danh sách tags của post</h4>
     <br />
-    <h4>GET: /customers: Lấy danh sách customers</h4>
-    <h4>GET: /customers?name=: Lấy danh sách customers theo name</h4>
-    <h4>POST: /customers: Tạo một customers</h4>
-    <h4>PUT: /customers: Sửa thông tin customer</h4>
-    <h4>DELETE: /customers: Xoá customer</h4>
+    <h4>GET: /galleries: Lấy ảnh từ galleries</h4>
   </code>
 
   <h1>Yêu cầu</h1>
-
   `);
 });
 
@@ -206,9 +112,92 @@ app.delete('/auth/logout', verifyToken, (req, res) => {
   res.sendStatus(204);
 });
 
-// app
-app.get('/customers', verifyToken, (req, res) => {
-  res.json(customers.filter((post) => post.userId !== req.userId));
+app.get('/posts', verifyToken, (req, res) => {
+  let data = postDummy[req.username];
+
+  const queryPage = +req.query?.page || 1;
+  const page = queryPage <= 1 ? 1 : queryPage;
+
+  if (req.query?.title || req.query?.tags) {
+    const postFilter =
+      postDummy[req.username]?.posts?.filter((item) => {
+        if (req.query?.title && req.query?.tags) {
+          return (
+            item?.title?.startsWith(req.query?.title) &&
+            item?.tags?.includes(req.query?.tags)
+          );
+        }
+
+        return (
+          item?.title?.startsWith(req.query?.title) ||
+          item?.tags?.includes(req.query?.tags)
+        );
+      }) || [];
+
+    data = {
+      ...data,
+      posts: postFilter.slice((page - 1) * 10, data.page_size * page),
+      current_page: page,
+      total_page: Math.ceil(postFilter?.length / 10),
+    };
+  } else {
+    data = {
+      ...data,
+      posts: data.posts.slice((page - 1) * 10, data.page_size * page),
+      current_page: page,
+    };
+  }
+
+  res.json(data);
+});
+
+app.post('/posts', verifyToken, (req, res) => {
+  const body = { id: faker.datatype.uuid(), ...req.body };
+  postDummy[req.username].posts.unshift(body);
+
+  postDummy[req.username] = {
+    ...postDummy[req.username],
+    current_page: 1,
+    total_page: Math.ceil(postDummy[req.username].posts.length / 10),
+  };
+
+  res.json(body);
+});
+
+app.patch('/posts/:postId', verifyToken, (req, res) => {
+  const body = req.body;
+
+  postDummy[req.username].posts = postDummy[req.username].posts.map((item) => {
+    let newItem = { ...item };
+    if (newItem.id === req.params.postId) {
+      newItem = {
+        ...newItem,
+        ...body,
+      };
+    }
+
+    return newItem;
+  });
+
+  res.json(body);
+});
+
+app.delete('/posts/:postId', verifyToken, (req, res) => {
+  postDummy[req.username].posts = postDummy[req.username].posts.filtter(
+    (item) => item.id !== req.params.postId
+  );
+
+  postDummy[req.username] = {
+    ...postDummy[req.username],
+    current_page: 1,
+    total_page: Math.ceil(postDummy[req.username].posts.length / 10),
+  };
+
+  res.json(req.body.postId);
+});
+
+app.get('/tags', verifyToken, (req, res) => {
+  res.json(tags);
 });
 
 app.get('/galleries', (req, res) => {
