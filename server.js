@@ -15,20 +15,13 @@ const path = require('path');
 
 const app = express();
 
-const options = {
-  explorer: true,
-  swaggerOptions: {
-    docExpansion: 'none',
-  },
-  customCssUrl:
-    'https://raw.githubusercontent.com/ostranme/swagger-ui-themes/develop/themes/3.x/theme-newspaper.css',
-};
+const options = {};
 
 app.use(cors());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 const generateTokens = (payload) => {
   const { id, username } = payload;
@@ -65,7 +58,7 @@ const updateRefreshToken = (username, refreshToken) => {
   });
 };
 
-app.get('/', (req, res) => {
+app.get('/docs', (req, res) => {
   res.send(`<h1>Welcome to Agiletech Test</h1>
   <a href="https://agiletechvn.vercel.app/api" target="_blank">Link Swagger</a>
   <code style="font-size:16px">
