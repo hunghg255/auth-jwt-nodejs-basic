@@ -17,7 +17,6 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const generateTokens = (payload) => {
   const { id, username } = payload;
@@ -54,9 +53,11 @@ const updateRefreshToken = (username, refreshToken) => {
   });
 };
 
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.get('/', (req, res) => {
   res.send(`<h1>Welcome to Agiletech Test</h1>
-  <a href="https://agiletech-test.herokuapp.com/api" target="_blank">Link Swagger</a>
+  <a href="https://agiletechvn.vercel.app/api" target="_blank">Link Swagger</a>
   <code style="font-size:16px">
     <h4>POST: /auth/login: Đăng nhập có accessToken, refreshToken (accessToken hết hạn sau 2 phút, refreshToken hết hạn sau 1 giờ)</h4>
     <h4>POST: /auth/refreshToken: Refresh token khi accessToken hết hạn</h4>
