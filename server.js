@@ -15,11 +15,15 @@ const path = require('path');
 
 const app = express();
 
+const options = {
+  customCssUrl: './public/swagger-ui.css',
+};
+
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 const generateTokens = (payload) => {
   const { id, username } = payload;
