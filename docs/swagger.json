@@ -278,7 +278,7 @@
     "AuthLoginBody": {
       "type": "object",
       "properties": {
-        "username": { "type": "string", "example": "admin" }
+        "username": { "type": "string", "example": "admin", "desciption": "Username: admin, admin1, admin2, adminRefresh, adminRefresh1, adminRefresh2" }
       }
     },
     "AuthRefreshBody": {
