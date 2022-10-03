@@ -11,17 +11,15 @@ const postDummy = require('./model/posts');
 const { faker } = require('@faker-js/faker');
 const tags = require('./model/tags');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
 app.use(cors());
-
-var options = {
-  customCssUrl: './assets/swagger.css',
-};
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const generateTokens = (payload) => {
   const { id, username } = payload;
