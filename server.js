@@ -10,8 +10,11 @@ let account = require('./model/users');
 const postDummy = require('./model/posts');
 const { faker } = require('@faker-js/faker');
 const tags = require('./model/tags');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
