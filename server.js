@@ -16,7 +16,7 @@ const path = require('path');
 const app = express();
 
 const options = {
-  customCssUrl: 'https://agiletechvn.vercel.app/swagger-ui.css',
+  customCssUrl: 'https://api-test1.vercel.app/swagger-ui.css',
 };
 
 app.use(cors());
@@ -62,7 +62,7 @@ const updateRefreshToken = (username, refreshToken) => {
 
 app.get('/', (req, res) => {
   res.send(`<h1>Welcome to Agiletech Test</h1>
-  <a href="https://agiletechvn.vercel.app/api" target="_blank">Link Swagger</a>
+  <a href="https://api-test1.vercel.app/api" target="_blank">Link Swagger</a>
   <code style="font-size:16px">
     <h4>POST: /auth/login: Đăng nhập có accessToken, refreshToken (accessToken hết hạn sau 2 phút, refreshToken hết hạn sau 1 giờ)</h4>
     <h4>POST: /auth/refreshToken: Refresh token khi accessToken hết hạn</h4>

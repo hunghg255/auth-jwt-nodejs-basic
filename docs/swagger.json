@@ -3,7 +3,7 @@
   "info": {
     "title": "Agiletech Test"
   },
-  "host": "agiletechvn.vercel.app",
+  "host": "api-test1.vercel.app",
   "tags": [
     {
       "name": "Auth",
