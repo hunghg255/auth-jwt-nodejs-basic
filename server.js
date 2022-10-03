@@ -192,7 +192,7 @@ app.patch('/posts/:postId', verifyToken, (req, res) => {
 });
 
 app.delete('/posts/:postId', verifyToken, (req, res) => {
-  postDummy[req.username].posts = postDummy[req.username].posts.filtter(
+  postDummy[req.username].posts = postDummy[req.username].posts.filter(
     (item) => item.id !== req.params.postId
   );
 
