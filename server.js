@@ -16,7 +16,7 @@ const path = require('path');
 const app = express();
 
 const options = {
-  customCssUrl: './public/swagger-ui.css',
+  customCssUrl: '/swagger-ui.css',
 };
 
 app.use(cors());
