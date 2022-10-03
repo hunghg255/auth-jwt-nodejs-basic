@@ -3,7 +3,7 @@
   "info": {
     "title": "Agiletech Test"
   },
-  "host": "agiletech-test.herokuapp.com",
+  "host": "agiletechvn.vercel.app",
   "tags": [
     {
       "name": "Auth",
