@@ -16,7 +16,12 @@ const app = express();
 
 app.use(cors());
 
+var options = {
+  customCssUrl: './assets/swagger.css',
+};
+
 app.use(express.json());
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
 const generateTokens = (payload) => {
   const { id, username } = payload;
@@ -52,8 +57,6 @@ const updateRefreshToken = (username, refreshToken) => {
     return user;
   });
 };
-
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req, res) => {
   res.send(`<h1>Welcome to Agiletech Test</h1>
