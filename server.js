@@ -115,7 +115,7 @@ app.post('/auth/refresh-token', (req, res) => {
 });
 
 app.delete('/auth/logout', verifyToken, (req, res) => {
-  const user = account.find((user) => user.id === req.userId);
+  const user = account.find((user) => user.username === req.username);
   updateRefreshToken(user.username, null);
 
   res.sendStatus(204);
