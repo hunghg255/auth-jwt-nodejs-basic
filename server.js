@@ -16,7 +16,12 @@ const path = require('path');
 const app = express();
 
 const options = {
-  customCssUrl: '/swagger-ui.css',
+  explorer: true,
+  swaggerOptions: {
+    docExpansion: 'none',
+  },
+  customCssUrl:
+    'https://raw.githubusercontent.com/ostranme/swagger-ui-themes/develop/themes/3.x/theme-newspaper.css',
 };
 
 app.use(cors());
