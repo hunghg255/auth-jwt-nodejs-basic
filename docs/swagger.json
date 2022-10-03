@@ -3,7 +3,7 @@
   "info": {
     "title": "Agiletech Test"
   },
-  "host": "jwt-auth-1.herokuapp.com",
+  "host": "agiletech-test.herokuapp.com",
   "tags": [
     {
       "name": "Auth",
